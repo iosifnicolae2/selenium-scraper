@@ -77,7 +77,11 @@ def task2():
         # Go back
         browser.execute_script("window.history.go(-1)")
 
-    print("Listened songs:\n{}".format('\n'.join([" - " + song + ": " + url for song, url in listened_songs])))
+    listened_songs_txt = "Listened songs:\n{}".format('\n'.join([" - " + song + ": " + url for song, url in listened_songs]))
+    print(listened_songs_txt)
+    with open("listened_songs.txt", "w") as text_file:
+        text_file.write(listened_songs_txt)
+
     browser.quit()
 
 
