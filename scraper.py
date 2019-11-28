@@ -7,6 +7,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
 
 TIMEOUT = 5 # seconds
 
@@ -22,9 +24,19 @@ if operating_system == 'Windows':
 if not WEBDRIVER_EXECUTABLE_PATH:
     raise Exception("Your operating system is not supported!")
 
+def get_browser():
+    if operating_system == 'Windows':
+        cap = DesiredCapabilities().FIREFOX
+        cap["marionette"] = True
+        binary = FirefoxBinary('C:\\Program Files\\Mozilla Firefox\\firefox.exe')
+        browser = Firefox(capabilities=cap, firefox_binary=binary,executable_path=WEBDRIVER_EXECUTABLE_PATH)
+        return browser
+    
+    return Firefox(executable_path=WEBDRIVER_EXECUTABLE_PATH)
+
 
 def task1():
-    browser = Firefox(executable_path='webdrivers/geckodriver_macos')
+    browser = get_browser()
     browser.get('http://example.com/')
     # Wait 1s
     time.sleep(1)
@@ -37,7 +49,7 @@ def task1():
     browser.quit()
 
 def task2():
-    browser = Firefox(executable_path='webdrivers/geckodriver_macos')
+    browser = get_browser()
     browser.get('http://bandcamp.com/')
     browser.save_screenshot(os.path.abspath('screeenshots/bandcamp__initial_page.png'))
 
